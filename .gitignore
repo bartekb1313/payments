@@ -1,0 +1,6 @@
+.idea
+
+image/app/.idea/
+image/app/tmp/
+.env
+image/app/cmd/pkg/*

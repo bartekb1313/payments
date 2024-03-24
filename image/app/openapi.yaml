@@ -1,0 +1,9 @@
+package: spec
+generate:
+  strict-server: true
+  chi-server: true
+  models: true
+  embedded-spec: true
+compatibility:
+  apply-chi-middleware-first-to-last: true
+output: internal/common/server/spec/payments.gen.go

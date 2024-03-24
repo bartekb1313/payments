@@ -1,0 +1,59 @@
+openapi: 3.0.3
+
+info:
+  title: Payments API
+  description: Payments API
+  version: 1.0.0
+paths:
+  "/api/branches":
+    post:
+      summary: Create branch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Branch"
+      responses:
+        "201":
+          description: Branch was created
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FieldErrors"
+    get:
+      summary: Get branches
+      responses:
+        "200":
+          description: Branches
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Branch"
+
+components:
+  schemas:
+    Branch:
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+    FieldErrors:
+      type: array
+      items:
+        $ref: "#/components/schemas/FieldError"
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string

@@ -1,0 +1,62 @@
+# https://taskfile.dev
+
+version: '3'
+
+
+tasks:
+  docker:start:
+    desc: Start containers
+    cmds:
+      #- docker compose --env-file .env up 
+      - docker compose --env-file .env up --force-recreate --always-recreate-deps -d --remove-orphans --build
+  docker:build:
+    desc: Build containers
+    cmds:
+      - docker build --no-cache --file ./image/Dockerfile  ./image
+
+  docker:stop:
+    desc: Stop containers
+    cmds:
+      - docker compose --env-file .env stop
+
+  docker:down:
+    desc: Stop and remove containers
+    cmds:
+      - docker compose --env-file .env down
+
+  docker:logs:
+    desc: Display logs
+    cmds:
+      - docker compose --env-file .env logs --timestamps --tail 25 --follow
+
+  docker:sh:
+    desc: Open in go container
+    cmds:
+      - docker compose --env-file .env run --entrypoint=/bin/sh api
+
+  setup:
+    cmds:
+      - task: docker:build
+      - docker compose --env-file .env up --force-recreate --always-recreate-deps -d --remove-orphans --build
+      
+  openapi:generate:
+    desc: Generate OpenApi server
+    cmds:
+      - docker compose --env-file .env run --entrypoint=/bin/sh --rm api -c "oapi-codegen -config openapi.yaml docs/openapi/payments.yml"
+
+  migrations:create:
+    desc: Create migration
+    cmds:
+      - docker compose --env-file .env run --entrypoint=/bin/sh --rm api -c "migrate create -ext sql -dir db/migrations app"
+
+  migrations:up:
+    dotenv: ['.env']
+    desc: Create migration
+    cmds:
+      - docker compose --env-file .env run --entrypoint=/bin/sh --rm api -c "migrate -database $DATABASE_URL -path db/migrations up"
+
+  migrations:down:
+    dotenv: ['.env']
+    desc: Drop migration
+    cmds:
+      - docker compose --env-file .env run --entrypoint=/bin/sh --rm api -c "migrate -database $DATABASE_URL -path db/migrations down"
