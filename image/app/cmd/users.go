@@ -15,7 +15,7 @@ var usersCmd = &cobra.Command{
 	Long:  `Create admin user`,
 	Run: func(cmd *cobra.Command, args []string) {
 		app := app.NewApplication(context.Background())
-		app.UserCommands.CreateUser("admin", email, password)
+		app.AuthModule.Commands.CreateUser("admin", email, password)
 	},
 }
 

@@ -6,13 +6,13 @@ import (
 	"context"
 )
 
-type BranchCommands struct {
+type Commands struct {
 	ctx        context.Context
 	repository domain.BranchRepository
 }
 
-func NewBranchServices(ctx context.Context) *BranchCommands {
-	return &BranchCommands{
+func NewCommands(ctx context.Context) *Commands {
+	return &Commands{
 		ctx:        ctx,
 		repository: adapters.NewBranchRepository(&ctx),
 	}

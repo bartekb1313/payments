@@ -36,7 +36,7 @@ func (h *HttpHandler) Blank(w http.ResponseWriter, r *http.Request) {
 func (h *HttpHandler) BranchList(w http.ResponseWriter, r *http.Request) {
 	includeLayout := r.URL.Query().Has("layout")
 	branches := make(map[string]interface{})
-	bb, _ := h.app.BranchQueries.GetBranches()
+	bb, _ := h.app.OrganizationModule.Queries.GetBranches()
 	for i := 0; i < len(bb); i++ {
 		branches[bb[i].Name()] = bb[i].AsView()
 	}
@@ -57,11 +57,10 @@ func (h *HttpHandler) BranchCreate(w http.ResponseWriter, r *http.Request) {
 	validationErrors := http_helpers.Validate(branchForm)
 
 	if len(validationErrors) == 0 {
-		h.app.BranchCommands.CreateBranch(branchForm.Name)
+		h.app.OrganizationModule.Commands.CreateBranch(branchForm.Name)
 		http.Redirect(w, r, "/organization/branches/list?layout=false", http.StatusSeeOther)
 	} else {
 		includeLayout := r.URL.Query().Has("layout")
 		http_helpers.RenderTemplate(w, "./views/pages/organization/branches/create.html", !includeLayout, &http_helpers.TemplateData{StringMap: validationErrors})
 	}
-
 }

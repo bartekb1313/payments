@@ -1,22 +1,19 @@
 package app
 
 import (
-	"api/internal/auth/application"
-	"api/internal/organization/application/commands"
-	"api/internal/organization/application/queries"
+	auth "api/internal/auth/application"
+	organization "api/internal/organization/application"
 	"context"
 )
 
 type Application struct {
-	BranchCommands *commands.BranchCommands
-	BranchQueries  *queries.BranchQueries
-	UserCommands   *application.UserCommands
+	OrganizationModule *organization.OrganizationModule
+	AuthModule         *auth.AuthModule
 }
 
 func NewApplication(ctx context.Context) *Application {
 	return &Application{
-		BranchCommands: commands.NewBranchServices(ctx),
-		BranchQueries:  queries.NewBranchQueries(ctx),
-		UserCommands:   application.NewUserServices(ctx),
+		OrganizationModule: organization.NewModule(ctx),
+		AuthModule:         auth.NewModule(ctx),
 	}
 }
