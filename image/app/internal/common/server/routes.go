@@ -17,7 +17,6 @@ func InitRoutes(app *app.Application) func(r chi.Router) {
 		r.Get("/logout", coreHandlers.Logout)
 		r.Post("/login", coreHandlers.Login)
 		r.Get("/", organizationHandlers.Dashboard)
-		r.Get("/blank", organizationHandlers.Blank)
 		r.Get("/organization/branches/list", organizationHandlers.BranchList)
 		r.Get("/organization/branches/create", organizationHandlers.BranchForm)
 		r.Post("/organization/branches/create", organizationHandlers.BranchCreate)
