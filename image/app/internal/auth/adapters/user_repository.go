@@ -1,4 +1,4 @@
-package sql
+package adapters
 
 import (
 	"api/internal/auth/domain"

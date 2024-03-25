@@ -6,17 +6,17 @@ import (
 	"context"
 )
 
-type BranchQueries struct {
+type Queries struct {
 	ctx        context.Context
 	repository domain.BranchRepository
 }
 
-func (s *BranchQueries) GetBranches() ([]domain.Branch, error) {
+func (s *Queries) GetBranches() ([]domain.Branch, error) {
 	return s.repository.GetAll()
 }
 
-func NewBranchQueries(ctx context.Context) *BranchQueries {
-	return &BranchQueries{
+func NewQueries(ctx context.Context) *Queries {
+	return &Queries{
 		ctx:        ctx,
 		repository: adapters.NewBranchRepository(&ctx),
 	}

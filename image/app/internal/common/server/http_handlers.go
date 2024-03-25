@@ -28,7 +28,7 @@ func (h *HttpHandler) LoginForm(w http.ResponseWriter, r *http.Request) {
 
 func (h *HttpHandler) Login(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("LOGIN", r.FormValue("email"), r.FormValue("password"))
-	result := h.Application.UserCommands.CheckPassword(r.FormValue("email"), r.FormValue("password"))
+	result := h.Application.AuthModule.Commands.CheckPassword(r.FormValue("email"), r.FormValue("password"))
 	if result == true {
 		session, _ := store.Get(r, "session-name")
 		session.Values["foo"] = "bar"
