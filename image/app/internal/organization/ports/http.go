@@ -21,7 +21,7 @@ type CreateBranchForm struct {
 }
 
 func (h *HttpHandler) Dashboard(w http.ResponseWriter, r *http.Request) {
-	http_helpers.RenderTemplate(w, "./views/pages/dashboard.html", true, &http_helpers.TemplateData{})
+	http_helpers.Render(w, "dashboard", "index", true, &http_helpers.TemplateData{})
 }
 
 func (h *HttpHandler) BranchList(w http.ResponseWriter, r *http.Request) {
@@ -31,12 +31,12 @@ func (h *HttpHandler) BranchList(w http.ResponseWriter, r *http.Request) {
 	for i := 0; i < len(bb); i++ {
 		branches[bb[i].Name()] = bb[i].AsView()
 	}
-	http_helpers.RenderTemplate(w, "./views/pages/organization/branches/list.html", !includeLayout, &http_helpers.TemplateData{Data: branches})
+	http_helpers.Render(w, "organization", "list-branches", !includeLayout, &http_helpers.TemplateData{Data: branches})
 }
 
 func (h *HttpHandler) BranchForm(w http.ResponseWriter, r *http.Request) {
 	includeLayout := r.URL.Query().Has("layout")
-	http_helpers.RenderTemplate(w, "./views/pages/organization/branches/create.html", !includeLayout, &http_helpers.TemplateData{})
+	http_helpers.Render(w, "organization", "create-branch", !includeLayout, &http_helpers.TemplateData{})
 
 }
 
@@ -51,6 +51,6 @@ func (h *HttpHandler) BranchCreate(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/organization/branches/list?layout=false", http.StatusSeeOther)
 	} else {
 		includeLayout := r.URL.Query().Has("layout")
-		http_helpers.RenderTemplate(w, "./views/pages/organization/branches/create.html", !includeLayout, &http_helpers.TemplateData{StringMap: validationErrors})
+		http_helpers.Render(w, "organization", "create-branch", !includeLayout, &http_helpers.TemplateData{StringMap: validationErrors})
 	}
 }

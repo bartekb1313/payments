@@ -1,125 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="shortcut icon" href="/assets/images/favicon.svg" type="image/x-icon" />
-    <title>Sign In | PlainAdmin Demo</title>
-
-    <!-- ========== All CSS files linkup ========= -->
-    <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/assets/css/lineicons.css" />
-    <link rel="stylesheet" href="/assets/css/materialdesignicons.min.css" />
-    <link rel="stylesheet" href="/assets/css/fullcalendar.css" />
-    <link rel="stylesheet" href="/assets/css/main.css" />
-    <script src="https://unpkg.com/htmx.org@1.9.5" integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO" crossorigin="anonymous"></script>
-  </head>
-  <body>
-    <!-- ======== Preloader =========== -->
-    <div id="preloader">
-      <div class="spinner"></div>
-    </div>
-    <!-- ======== Preloader =========== -->
-    <main class="main-wrapper">
-      <!-- ========== signin-section start ========== -->
-      <section class="signin-section">
-        <div class="container-fluid">
-
-
-          <div class="row g-0 auth-row">
-
-            <div class="col-lg-6">
-              <div class="signin-wrapper">
-                <div class="form-wrapper">
-                  <h6 class="mb-15">Sign In Form</h6>
-                  <p class="text-sm mb-25">
-                    Start creating the best possible user experience for you
-                    customers.
-                  </p>
-                  <form action="/login" method="post">
-                    <div class="row">
-                      <div class="col-12">
-                        <div class="input-style-1">
-                          <label>Email</label>
-                          <input id="email" name="email" type="email" placeholder="Email" />
-                        </div>
-                      </div>
-                      <!-- end col -->
-                      <div class="col-12">
-                        <div class="input-style-1">
-                          <label>Password</label>
-                          <input id="password" name="password" type="password" placeholder="Password" />
-                        </div>
-                      </div>
-                      <!-- end col -->
-                      <div class="col-xxl-6 col-lg-12 col-md-6">
-                        <div class="form-check checkbox-style mb-30">
-                          <input class="form-check-input" type="checkbox" value="" id="checkbox-remember" />
-                          <label class="form-check-label" for="checkbox-remember">
-                            Remember me next time</label>
-                        </div>
-                      </div>
-                      <!-- end col -->
-                      <div class="col-xxl-6 col-lg-12 col-md-6">
-                        <div class="text-start text-md-end text-lg-start text-xxl-end mb-30">
-                          <a href="reset-password.html" class="hover-underline">
-                            Forgot Password?
-                          </a>
-                        </div>
-                      </div>
-                      <!-- end col -->
-                      <div class="col-12">
-                        <div class="button-group d-flex justify-content-center flex-wrap">
-                          <button class="main-btn primary-btn btn-hover w-100 text-center">
-                            Sign In
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- end row -->
-                  </form>
-                  <div class="singin-option pt-40">
-                    <p class="text-sm text-medium text-center text-gray">
-                      Easy Sign In With
-                    </p>
-                    <div class="button-group pt-40 pb-40 d-flex justify-content-center flex-wrap">
-                      <button class="main-btn primary-btn-outline m-2">
-                        <i class="lni lni-facebook-fill mr-10"></i>
-                        Facebook
-                      </button>
-                      <button class="main-btn danger-btn-outline m-2">
-                        <i class="lni lni-google mr-10"></i>
-                        Google
-                      </button>
-                    </div>
-                    <p class="text-sm text-medium text-dark text-center">
-                      Don’t have any account yet?
-                      <a href="signup.html">Create an account</a>
-                    </p>
-                  </div>
+{{ block "content" . }}
+      <div class="container container-tight py-4">
+        <div class="text-center mb-4">
+          <a href="." class="navbar-brand navbar-brand-autodark">
+            <img src="/assets/static/logo.svg" width="110" height="32" alt="Tabler" class="navbar-brand-image">
+          </a>
+        </div>
+        <div class="card card-md">
+          <div class="card-body">
+            <h2 class="h2 text-center mb-4">Login to your account</h2>
+            <form method="post" autocomplete="off" novalidate>
+              <div class="mb-3">
+                <label class="form-label">Email address</label>
+                <input id="email" name="email" type="email" class="form-control" placeholder="your@email.com" autocomplete="off">
+              </div>
+              <div class="mb-2">
+                <label class="form-label">
+                  Password
+                  <span class="form-label-description">
+                    <a href="./forgot-password.html">I forgot password</a>
+                  </span>
+                </label>
+                <div class="input-group input-group-flat">
+                  <input id="type" name="password" type="password" class="form-control"  placeholder="Your password"  autocomplete="off">
+                  <span class="input-group-text">
+                    <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/eye -->
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
+                    </a>
+                  </span>
                 </div>
               </div>
-            </div>
-            <!-- end col -->
+              <div class="mb-2">
+                <label class="form-check">
+                  <input type="checkbox" class="form-check-input"/>
+                  <span class="form-check-label">Remember me on this device</span>
+                </label>
+              </div>
+              <div class="form-footer">
+                <button type="submit" class="btn btn-primary w-100">Sign in</button>
+              </div>
+            </form>
           </div>
-          <!-- end row -->
         </div>
-      </section>
-      <!-- ========== signin-section end ========== -->
-
-    </main>
-    <!-- ======== main-wrapper end =========== -->
-
-    <!-- ========= All Javascript files linkup ======== -->
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/Chart.min.js"></script>
-    <script src="assets/js/dynamic-pie-chart.js"></script>
-    <script src="assets/js/moment.min.js"></script>
-    <script src="assets/js/fullcalendar.js"></script>
-    <script src="assets/js/jvectormap.min.js"></script>
-    <script src="assets/js/world-merc.js"></script>
-    <script src="assets/js/polyfill.js"></script>
-    <script src="assets/js/main.js"></script>
-  </body>
-</html>
+      </div>
+{{ end}}
