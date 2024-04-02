@@ -12,8 +12,8 @@ type Commands struct {
 	repository domain.UserRepository
 }
 
-func (s *Commands) CreateUser(name string, email string, password string) domain.User {
-	user := domain.NewUser(name, email, s.HashPassword(password))
+func (s *Commands) CreateUser(email string, password string) domain.User {
+	user := domain.NewUser(email, s.HashPassword(password))
 	s.repository.Save(&user)
 	return user
 }

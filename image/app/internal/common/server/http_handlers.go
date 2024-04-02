@@ -2,15 +2,16 @@ package server
 
 import (
 	"api/internal/common/app"
+	http_helpers "api/internal/common/http"
 	"fmt"
 	"github.com/go-chi/chi/v5"
 	"github.com/gorilla/sessions"
-	"html/template"
 	"net/http"
+	"os"
 	"strings"
 )
 
-var store = sessions.NewCookieStore([]byte("SESSION_KEY"))
+var store = sessions.NewCookieStore([]byte(os.Getenv("SESSION_KEY")))
 
 type HttpHandler struct {
 	Application *app.Application
@@ -23,37 +24,37 @@ func NewHttpHandler(app *app.Application) *HttpHandler {
 }
 
 func (h *HttpHandler) LoginForm(w http.ResponseWriter, r *http.Request) {
-	RenderTemplate(w, "./templates/auth/signin.html", false)
+	http_helpers.Render(w, "auth", "signin", true, http_helpers.TemplateData{})
 }
 
 func (h *HttpHandler) Login(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("LOGIN", r.FormValue("email"), r.FormValue("password"))
 	result := h.Application.AuthModule.Commands.CheckPassword(r.FormValue("email"), r.FormValue("password"))
 	if result == true {
-		session, _ := store.Get(r, "session-name")
-		session.Values["foo"] = "bar"
-		session.Values[42] = 43
+
+		session, _ := store.Get(r, "payments-session")
+		session.Values["email"] = r.FormValue("email")
 		err := session.Save(r, w)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		http.Redirect(w, r, "/index", http.StatusSeeOther)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 	} else {
 		fmt.Println("WRONG")
 	}
-	RenderTemplate(w, "./templates/auth/signin.html", false)
+
+	http_helpers.Render(w, "auth", "signin", false, &http_helpers.TemplateData{})
 }
 
 func (h *HttpHandler) Logout(w http.ResponseWriter, r *http.Request) {
-	session, _ := store.Get(r, "session-name")
-	session.Values["foo"] = "logout"
+	session, _ := store.Get(r, "payments-name")
+	session.Options.MaxAge = -1
 	err := session.Save(r, w)
 	if err != nil {
 		return
 	}
 
-	http.Redirect(w, r, "/login", http.StatusSeeOther)
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 
 }
 func (h *HttpHandler) FileServer(r chi.Router, path string, root http.FileSystem) {
@@ -73,23 +74,4 @@ func (h *HttpHandler) FileServer(r chi.Router, path string, root http.FileSystem
 		fs := http.StripPrefix(pathPrefix, http.FileServer(root))
 		fs.ServeHTTP(w, r)
 	})
-}
-func RenderTemplate(w http.ResponseWriter, tmpl string, includeLayout bool) {
-	if includeLayout == true {
-		parsedTemplate, _ := template.ParseFiles("./templates/layout.html")
-
-		err := parsedTemplate.Execute(w, nil)
-
-		if err != nil {
-			fmt.Println("Error executing template: ", tmpl, "error: ", err)
-		}
-	} else {
-		parsedTemplate, _ := template.ParseFiles(tmpl)
-		err := parsedTemplate.Execute(w, nil)
-
-		if err != nil {
-			fmt.Println("Error executing template: ", tmpl, "error: ", err)
-		}
-	}
-
 }

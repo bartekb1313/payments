@@ -35,6 +35,10 @@ func bootstrap() {
 		server_common.InitRoutes(app),
 	)
 
+	r.Group(
+		server_common.InitStatic(app),
+	)
+
 	s := &http.Server{
 		Handler: r,
 		Addr:    "0.0.0.0:8080",

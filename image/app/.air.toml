@@ -7,13 +7,13 @@ tmp_dir = "tmp"
 
 [build]
 # Just plain old shell command. You could use `make` as well.
-cmd = "go build -o /build main.go"
+cmd = "go build -o /payments main.go"
 # Binary file yields from `cmd`.
 bin = "tmp/app"
 
 # Customize binary.
 # This is how you start to run your application. Since my application will works like CLI, so to run it, like to make a CLI call.
-full_bin = "/build start"
+full_bin = "/payments start"
 # This log file places in your tmp_dir.
 log = "air_errors.log"
 # Watch these filename extensions.

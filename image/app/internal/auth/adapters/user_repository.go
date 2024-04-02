@@ -20,7 +20,7 @@ func (r Repo) GetPassHashByEmail(email string) (string, error) {
 }
 
 func (r Repo) Save(user *domain.User) {
-	_, err := r.dbpool.Exec(context.Background(), "insert into users(name, email, password_hash) values($1, $2, $3)", user.GetName(), user.GetEmail(), user.GetPassword())
+	_, err := r.dbpool.Exec(context.Background(), "insert into users(email, password_hash) values($1, $2)", user.GetEmail(), user.GetPassword())
 	if err != nil {
 		fmt.Println(err)
 	}

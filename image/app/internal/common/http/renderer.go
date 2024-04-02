@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"strings"
 )
 
 type TemplateData struct {
@@ -12,23 +13,32 @@ type TemplateData struct {
 	CSRFToken string
 }
 
-func RenderTemplate(w http.ResponseWriter, tmpl string, includeLayout bool, pageContent *TemplateData) {
-	if includeLayout == true {
-		content, _ := template.ParseFiles("./views/layout.html", "./views/partials/header.html", "./views/partials/sidebar.html", "./views/partials/footer.html", tmpl)
-		w.Header().Set("Content-Type", "text/html")
-		err := content.Execute(w, pageContent)
+func GetFilePaths(module string, tmplName string, includeLayout bool) []string {
+	commonLayouts := []string{"./views/layout.html", "./views/partials/header.html", "./views/partials/sidebar.html", "./views/partials/footer.html"}
+	authLayouts := []string{"./views/auth/layout.html"}
+	var selectedLayouts []string
 
-		if err != nil {
-			fmt.Println("Error executing template: ", tmpl, "error: ", err)
-		}
-	} else {
-		content, _ := template.New("content").ParseFiles(tmpl)
-		content.New("base").Parse(`{{ template "content" .}}`)
-		err := content.Execute(w, pageContent)
-
-		if err != nil {
-			fmt.Println("Error executing template: ", tmpl, "error: ", err)
-		}
+	selectedLayouts = commonLayouts
+	if module == "auth" {
+		selectedLayouts = authLayouts
 	}
 
+	templatePath := strings.Replace("./views/modulename/templatename.html", "modulename", module, 1)
+	templatePath = strings.Replace(templatePath, "templatename", tmplName, 1)
+
+	if includeLayout == true {
+		return append(selectedLayouts, templatePath)
+	}
+
+	return []string{templatePath}
+}
+
+func Render(w http.ResponseWriter, module string, tmplName string, includeLayout bool, data interface{}) {
+	content, _ := template.ParseFiles(GetFilePaths(module, tmplName, includeLayout)...)
+	w.Header().Set("Content-Type", "text/html")
+	err := content.Execute(w, data)
+
+	if err != nil {
+		fmt.Println("Error executing template: ", tmplName, "error: ", err)
+	}
 }
